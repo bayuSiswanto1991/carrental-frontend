@@ -12,10 +12,10 @@ const Home = () => {
     <div>
       {/* HERO SECTION */}
       <div className=" bg-[#F1F5F9] px-6 md:px-16 pt-16 pb-0 flex flex-col items-center text-center">
-        <h1 className=" text-4xl md:text-5xl font-bold text-[#414141] mb-4">Luxury Cars on Rent</h1>
+        <h1 className=" text-3xl sm:text-4xl md:text-5xl font-bold text-[#414141] mb-4">Luxury Cars on Rent</h1>
 
         {/* SEARCH BAR */}
-        <div className=" bg-white rounded-full shadow-md flex items-center gap-4 px-6 py-4 mt-6 w-full max-w-2xl">
+        <div className=" bg-white rounded-full shadow-md hidden md:flex items-center gap-4 px-6 py-4 mt-6 w-full max-w-2xl">
           <div className=" flex flex-col items-start">
             <span className=" text-xs text-gray-400">Pickup Location</span>
             <span className=" text-sm font-medium">Bangalore</span>
@@ -30,11 +30,12 @@ const Home = () => {
             <span className=" text-xs text-gray-400">Return Date</span>
             <span className=" text-sm font-medium">30-Mar 2025</span>
           </div>
-
-          <button onClick={() => navigate("/cars")} className=" bg-primary text-white px-6 py-3 rounded-full text-sm hover:opacity-90 transition flex items-center gap-2 ">
-            <img src={assets.search_icon} alt="" className=" w-4 brightness-0 invert" /> Search
-          </button>
         </div>
+
+        {/* SEARCH BUTTON - mobile only */}
+        <button onClick={() => navigate("/cars")} className=" md:hidden bg-primary text-white px-6 py-3 rounded-full text-sm hover:opacity-90 transition flex items-center gap-2 ">
+          <img src={assets.search_icon} alt="" className=" w-4 brightness-0 invert" /> Search
+        </button>
 
         {/* HERO IMAGE */}
         <img src={assets.main_car} alt="Luxury Car" className=" mt-8 w-full max-w-2xl" />
@@ -134,9 +135,9 @@ const Home = () => {
       <div className=" px-6 md:px-16 py-16 text-center">
         <h2 className=" text-3xl font-bold mb-2">Never Miss a Deal!</h2>
         <p className="text-gray-400 text-center text-sm mb-10">Subscribe to get the latest offers, new collections, and exclusive discounts.</p>
-        <div className=" flex items-center max-w-md mx-auto">
-          <input type="email" placeholder="Enter your email address" className=" flex-1 border border-gray-200 outline-none rounded-l-lg px-4 py-3 text-sm" />
-          <button className=" bg-primary text-white px-6 py-3 text-sm text-white rounded-r-lg hover:opacity-90 transition">Subscribe Now</button>
+        <div className=" flex flex-col md:flex-row items-center max-w-md mx-auto gap-3 sm:gap-0">
+          <input type="email" placeholder="Enter your email address" className=" w-full sm:flex-1 border border-gray-200 outline-none sm:rounded-l-lg sm:rounded-r-none rounded-lg px-4 py-3 text-sm" />
+          <button className=" w-full sm:w-auto bg-primary text-white px-6 py-3 text-sm rounded-lg sm:rounded-l-none sm:rounded-r-lg hover:opacity-90 transition">Subscribe Now</button>
         </div>
       </div>
     </div>

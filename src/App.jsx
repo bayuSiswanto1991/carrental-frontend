@@ -8,6 +8,7 @@ import CarDetail from "./pages/CarDetail";
 import MyBookings from "./pages/MyBookings";
 import Login from "./pages/Login";
 import OwnerDashboard from "./pages/OwnerDashboard";
+import Profile from "./pages/Profile";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/owner/manage-cars" element={<OwnerDashboard />} />
         <Route path="/owner/manage-bookings" element={<OwnerDashboard />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer />
     </div>
