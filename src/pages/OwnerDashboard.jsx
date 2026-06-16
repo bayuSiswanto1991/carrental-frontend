@@ -128,30 +128,32 @@ const Dashboard = () => {
           <h2 className=" font-semibold text-gray-800 mb-1 ">Recent Bookings</h2>
           <p className=" text-gray-400 text-xs mb-4">Latest customer bookings</p>
           <div className=" flex flex-col gap-4">
-            {data.recentBookings.map((booking, index) => (
-              <div key={index} className=" flex items-center justify-between">
-                <div className=" flex items-center gap-3">
-                  <div className=" flex items-center justify-center bg-primary/10 w-8 h-8 rounded-full">
-                    <img src={assets.listIconColored} alt="" className=" w-5" />
+            {data.recentBookings
+              .filter((booking) => booking.car)
+              .map((booking, index) => (
+                <div key={index} className=" flex items-center justify-between">
+                  <div className=" flex items-center gap-3">
+                    <div className=" flex items-center justify-center bg-primary/10 w-8 h-8 rounded-full">
+                      <img src={assets.listIconColored} alt="" className=" w-5" />
+                    </div>
+                    <div>
+                      <p className=" text-sm font-medium">
+                        {booking.car.brand} {booking.car.model}
+                      </p>
+                      <p className=" text-xs text-gray-400">{new Date(booking.createdAt).toLocaleDateString()}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className=" text-sm font-medium">
-                      {booking.car.brand} {booking.car.model}
-                    </p>
-                    <p className=" text-xs text-gray-400">{new Date(booking.createdAt).toLocaleDateString()}</p>
-                  </div>
-                </div>
-                <div className=" text-right flex items-center gap-2">
-                  <p className=" text-sm font-semibold text-gray-400">${booking.price}</p>
-                  <p
-                    className={` text-xs rounded-full px-2 py-0.5 rounded-full
+                  <div className=" text-right flex items-center gap-2">
+                    <p className=" text-sm font-semibold text-gray-400">${booking.price}</p>
+                    <p
+                      className={` text-xs rounded-full px-2 py-0.5 rounded-full
                     ${booking.status === "confirmed" ? "bg-green-100 text-green-600" : booking.status === "completed" ? "bg-blue-100 text-blue-600" : "bg-yellow-100 text-yellow-600"}`}
-                  >
-                    {booking.status}
-                  </p>
+                    >
+                      {booking.status}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
         {/* MONTHLY REVENUE */}
@@ -325,38 +327,40 @@ const ManageBookings = () => {
         </div>
 
         {/* ROW */}
-        {bookings.map((booking, index) => (
-          <div key={index} className=" flex items-center px-4 py-3 border-t border-gray-100 items-center">
-            {/* CAR */}
-            <div className=" flex items-center gap-3 w-48">
-              <img src={booking.car.image} alt="" className=" w-14 h-10 rounded-lg object-cover" />
-              <p className=" text-sm font-semibold text-gray-800">
-                {booking.car.brand} {booking.car.model}
+        {bookings
+          .filter((booking) => booking.car)
+          .map((booking, index) => (
+            <div key={index} className=" flex items-center px-4 py-3 border-t border-gray-100 items-center">
+              {/* CAR */}
+              <div className=" flex items-center gap-3 w-48">
+                <img src={booking.car.image} alt="" className=" w-14 h-10 rounded-lg object-cover" />
+                <p className=" text-sm font-semibold text-gray-800">
+                  {booking.car.brand} {booking.car.model}
+                </p>
+              </div>
+
+              {/* DATE RANGE */}
+              <p className=" text-sm text-gray-600 flex-1">
+                {new Date(booking.pickupDate).toLocaleDateString("en-US", {
+                  month: "numeric",
+                  day: "numeric",
+                  year: "numeric",
+                })}{" "}
+                to{" "}
+                {new Date(booking.returnDate).toLocaleDateString("en-US", {
+                  month: "numeric",
+                  day: "numeric",
+                  year: "numeric",
+                })}
               </p>
-            </div>
 
-            {/* DATE RANGE */}
-            <p className=" text-sm text-gray-600 flex-1">
-              {new Date(booking.pickupDate).toLocaleDateString("en-US", {
-                month: "numeric",
-                day: "numeric",
-                year: "numeric",
-              })}{" "}
-              to{" "}
-              {new Date(booking.returnDate).toLocaleDateString("en-US", {
-                month: "numeric",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </p>
+              {/* TOTAL */}
+              <p className=" text-sm text-gray-600 w-20">${booking.price}</p>
 
-            {/* TOTAL */}
-            <p className=" text-sm text-gray-600 w-20">${booking.price}</p>
-
-            {/* STATUS  */}
-            <div className=" col-span-2 flex items-center gap-3 w-32">
-              <span
-                className={` text-xs px-2 py-1 rounded-full font-medium
+              {/* STATUS  */}
+              <div className=" col-span-2 flex items-center gap-3 w-32">
+                <span
+                  className={` text-xs px-2 py-1 rounded-full font-medium
                 ${
                   booking.status === "confirmed"
                     ? " bg-green-100 text-green-600"
@@ -366,22 +370,22 @@ const ManageBookings = () => {
                         ? " bg-red-100 text-red-600"
                         : " bg-yellow-100 text-yellow-600"
                 }`}
+                >
+                  {booking.status}
+                </span>
+              </div>
+              <select
+                value={booking.status}
+                onChange={(e) => handleStatus(booking._id, e.target.value)}
+                className=" w-24 text-xs border border-gray-200 px-2 py-1 rounded-lg hover:bg-gray-50 transition"
               >
-                {booking.status}
-              </span>
+                <option value="pending">Pending</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
             </div>
-            <select
-              value={booking.status}
-              onChange={(e) => handleStatus(booking._id, e.target.value)}
-              className=" w-24 text-xs border border-gray-200 px-2 py-1 rounded-lg hover:bg-gray-50 transition"
-            >
-              <option value="pending">Pending</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );
